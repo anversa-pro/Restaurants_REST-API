@@ -12,6 +12,5 @@ def authenticate(email, password):
 
 def identity(payload):
     user_id = payload['identity']
-    setattr(request, "userid", {user_id})
+    setattr(request, "userid", user_id)
     return User.query.get(user_id)
-
