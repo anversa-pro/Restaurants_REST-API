@@ -1,3 +1,4 @@
+from flasgger import swag_from
 from flask import Blueprint, request
 from flask_jwt import jwt_required
 
@@ -12,6 +13,7 @@ restaurant_blueprint = Blueprint('restaurant_blueprint', __name__, url_prefix="/
 
 @restaurant_blueprint.route('/')
 @jwt_required()
+@swag_from('../documentation/get_restaurants.yml')
 def get_restaurants():
     try:
         args = request.args
