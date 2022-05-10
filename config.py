@@ -1,6 +1,7 @@
 import datetime
 import os
 from dotenv import load_dotenv
+from flasgger import Swagger
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -14,5 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
 app.config['SECRET_KEY'] = os.environ["JWT_SECRET_KEY"]
 app.config['JWT_AUTH_USERNAME_KEY'] = "email"
 app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(minutes=20)
+
+swagger = Swagger(app)
 
 db = SQLAlchemy(app)
