@@ -7,4 +7,4 @@ class User(db.Model):
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
 
-    restaurant_created = db.relationship('Restaurant', backref='user')
+    restaurants_created = db.relationship('Restaurant', backref='user')
