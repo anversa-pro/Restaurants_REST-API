@@ -7,6 +7,9 @@ import bcrypt
 from models.restaurant import Restaurant
 from models.user import User
 from validators.validator import Validator
+from validators.password import Password, PasswordNotValidError
+
+from email_validator import validate_email, EmailNotValidError
 
 user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/users")
 
@@ -20,9 +23,19 @@ def create_user():
         email = body_json.get('email') or ''
         password_str = body_json.get('password') or ''
 
-        create = Validator.validate(username, email, password_str)
+        non_empty = Validator.validate_nonempty(username, email, password_str)
 
-        if create:
+        if non_empty:
+            try:
+                validate_email(email).email
+            except EmailNotValidError as e:
+                return {'message': f'sorry, {e}'}, 400
+
+            try:
+                Password.validate_password(password_str)
+            except PasswordNotValidError as e:
+                return {'message': f'sorry, {e}'}, 400
+
             password_hashed = bcrypt.hashpw(password_str.encode(), bcrypt.gensalt())
 
             new_user = User(username=username, password=password_hashed, email=email)
@@ -37,7 +50,7 @@ def create_user():
 
     except Exception as e:
         print(f'error en create_user(): {e}')
-        return {'message': 'sorry, we are cooking :v'}, 500
+        return {f'message': 'sorry, we are cooking :v'}, 500
 
 
 @user_blueprint.route('/restaurants', strict_slashes=False)

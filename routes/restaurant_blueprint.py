@@ -65,7 +65,7 @@ def create_restaurant():
         city = body_json.get('city') or ''
         user_id = request.userid
 
-        create = Validator.validate(name, ranking, chef, abstract, access, city, user_id)
+        create = Validator.validate_nonempty(name, ranking, chef, abstract, access, city, user_id)
 
         if create:
             new_restaurant = Restaurant(name=name, ranking=ranking, chef=chef, abstract=abstract, public_access=access,
