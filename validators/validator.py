@@ -1,7 +1,8 @@
+
 class Validator:
 
     @staticmethod
-    def validate(*args):
+    def validate_nonempty(*args):
         validate = True
 
         for arg in args:
@@ -12,6 +13,9 @@ class Validator:
                 if arg == -1:
                     validate = False
             elif isinstance(arg, list):
+                if not arg:
+                    validate = False
+            elif isinstance(arg, dict):
                 if not arg:
                     validate = False
 
