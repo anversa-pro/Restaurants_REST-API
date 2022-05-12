@@ -6,8 +6,9 @@ import bcrypt
 
 from models.restaurant import Restaurant
 from models.user import User
+from validators.user_validator import NewUser, UserNotValidError
 from validators.validator import Validator
-from validators.password import Password, PasswordNotValidError
+from validators.password_validator import Password, PasswordNotValidError
 
 from email_validator import validate_email, EmailNotValidError
 
@@ -26,6 +27,11 @@ def create_user():
         non_empty = Validator.validate_nonempty(username, email, password_str)
 
         if non_empty:
+            try:
+                NewUser.validate_new_user(username, email)
+            except UserNotValidError as e:
+                return{'message': f'sorry, {e}'}, 400
+
             try:
                 validate_email(email).email
             except EmailNotValidError as e:
