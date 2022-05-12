@@ -13,7 +13,7 @@ def get_random_number():
     try:
         r = requests.get(url+query)
         result = {'random number': r.text}
-        return result
+        return result, 200
 
     except Exception as e:
         print(f'error en get_random_number(): {e}')
