@@ -27,6 +27,7 @@ class PasswordCharacterCaseError(PasswordNotValidError):
 
 
 class Password:
+
     @staticmethod
     def validate_password(arg):
         validate = False
