@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from flask_jwt import jwt_required
 
 from models.city import City
@@ -13,16 +13,41 @@ city_blueprint = Blueprint('city_blueprint', __name__, url_prefix="/cities")
 @jwt_required()
 def get_cities():
     try:
-        cities = City.query.all()
-        my_list = []
+        args = request.args
+        page = 1
+        per_page = 5
+
+        if args:
+            try:
+                page = int(args.get('page'))
+                per_page = int(args.get('limit'))
+
+                if (page < 0) or (per_page < 0):
+                    return {'message': 'sorry, invalid pagination query arguments  :v'}, 400
+
+            except Exception as e:
+                print(f'error en get_page(): {e}')
+                return {'message': 'sorry, invalid pagination query arguments  :v'}, 400
+
+        cities = City.query.paginate(per_page=per_page, page=page, error_out=False)
+
         if cities:
-            for city in cities:
-                my_dict = {city.id: city.to_json()}
-                my_dict[city.id]['country_name'] = city.country_name
-                my_list.append(my_dict)
-            return {'cities': my_list}, 200
-        else:
-            return {'message': 'sorry, we have no cities to visit :v'}, 404
+            cities_list = []
+
+            pagination = {'total cities': cities.total,
+                          'total pages': cities.pages,
+                          'current page': cities.page,
+                          'next page available': cities.has_next,
+                          'cities per page': cities.per_page}
+
+            for city in cities.items:
+                city_dict = city.to_json()
+                city_dict['country_name'] = city.country_name
+                cities_list.append(city_dict)
+
+            return {'pagination': [pagination], 'cities': cities_list}, 200
+
+        return {'message': 'sorry, we have no cities to visit :v'}, 404
 
     except Exception as e:
         print(f'error en get_cities(): {e}')

@@ -17,15 +17,115 @@ restaurant_blueprint = Blueprint('restaurant_blueprint', __name__, url_prefix="/
 def get_restaurants():
     try:
         args = request.args
-        user_id = request.userid
-        restaurants = Restaurant.query.filter_by(public_access=True).all()
-        # Add relationship to city & country
+        page = 1
+        per_page = 5
+
         if args:
-            if args.get('private'):
-                private_restaurants = Restaurant.query.filter_by(public_access=False, user_id=user_id).all()
-                for restaurant in private_restaurants:
-                    restaurants.append(restaurant)
-        return {'restaurant': [restaurant.to_json() for restaurant in restaurants]}, 200
+            try:
+                page = int(args.get('page'))
+                per_page = int(args.get('limit'))
+
+                if (page < 0) or (per_page < 0):
+                    return {'message': 'sorry, invalid pagination query arguments  :v'}, 400
+
+            except Exception as e:
+                print(f'error en get_page(): {e}')
+                return {'message': 'sorry, invalid pagination query arguments  :v'}, 400
+
+        restaurants = Restaurant.query.filter_by(public_access=True).paginate(per_page=per_page,
+                                                                              page=page, error_out=False)
+
+        if restaurants:
+            restaurants_list = []
+
+            pagination = {'total restaurants': restaurants.total,
+                          'total pages': restaurants.pages,
+                          'current page': restaurants.page,
+                          'next page available': restaurants.has_next,
+                          'restaurants per page': restaurants.per_page}
+
+            for each in restaurants.items:
+                restaurant_dict = each.to_json()
+                location = {'city id': each.city, 'city name': each.city_name, 'country id': each.city_two.country,
+                            'country name': each.city_two.country_name}
+                restaurant_dict.pop('city', 'user_id')
+                restaurant_dict['location'] = location
+                restaurants_list.append(restaurant_dict)
+            return {'pagination': [pagination], 'restaurants': restaurants_list}, 200
+
+        return {'message': 'sorry, we have no restaurants to visit :v'}, 404
+
+    except Exception as e:
+        print(f'error en get_restaurants(): {e}')
+        return {'message': 'sorry, we are cooking :v'}, 500
+
+
+@restaurant_blueprint.route('/user')
+@jwt_required()
+def get_user_restaurants():
+    user_id = request.userid
+
+    try:
+        args = request.args
+        private = args.get('private')
+        public = args.get('public')
+        page = args.get('page')
+        per_page = args.get('limit')
+
+        if page or per_page:
+            try:
+                page = int(page)
+                per_page = int(per_page)
+                if (page < 0) or (per_page < 0):
+                    return {'message': 'sorry, invalid pagination query arguments :v'}, 400
+            except Exception as e:
+                print(f'error en get_page(): {e}')
+                return {'message': 'sorry, invalid pagination query arguments :v'}, 400
+        else:
+            page = 1
+            per_page = 5
+
+        if private:
+            try:
+                restaurants = Restaurant.query.filter_by(public_access=False,
+                                                         user_id=user_id).paginate(per_page=per_page,
+                                                                                   page=page, error_out=False)
+            except Exception as e:
+                print(f'error en get_user_restaurant() private: {e}')
+                return {'message': 'sorry, you have no private registers :v'}, 400
+
+        elif public:
+            try:
+                restaurants = Restaurant.query.filter_by(public_access=True,
+                                                         user_id=user_id).paginate(per_page=per_page, page=page,
+                                                                                   error_out=False)
+            except Exception as e:
+                print(f'error en get_user_restaurant() private: {e}')
+                return {'message': 'sorry, you have no public registers :v'}, 400
+
+        else:
+            restaurants = Restaurant.query.filter_by(user_id=user_id).paginate(per_page=per_page,
+                                                                               page=page, error_out=False)
+
+        if restaurants:
+            restaurants_list = []
+
+            pagination = {'total restaurants': restaurants.total,
+                          'total pages': restaurants.pages,
+                          'current page': restaurants.page,
+                          'next page available': restaurants.has_next,
+                          'restaurants per page': restaurants.per_page}
+
+            for each in restaurants.items:
+                restaurant_dict = each.to_json()
+                location = {'city id': each.city, 'city name': each.city_name, 'country id': each.city_two.country,
+                            'country name': each.city_two.country_name}
+                restaurant_dict.pop('city')
+                restaurant_dict['location'] = location
+                restaurants_list.append(restaurant_dict)
+            return {'pagination': [pagination], 'restaurants': restaurants_list}, 200
+
+        return {'message': 'sorry, you have no restaurants to visit :v'}, 404
 
     except Exception as e:
         print(f'error en get_restaurants(): {e}')
