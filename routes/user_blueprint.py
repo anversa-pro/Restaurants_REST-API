@@ -15,6 +15,20 @@ from email_validator import validate_email, EmailNotValidError
 user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/users")
 
 
+@user_blueprint.route('/')
+@jwt_required()
+def get_user():
+    user_id = request.userid
+    try:
+        user = User.query.get(user_id)
+        user_dict = {'username': user.username, 'email': user.email, 'user_id': user.id}
+        return {'user': user_dict}, 400
+
+    except Exception as e:
+        print(f'error en get_user(): {e}')
+        return {f'message': 'sorry, we are cooking :v'}, 500
+
+
 @user_blueprint.route('/', methods=['POST'])
 def create_user():
     try:
@@ -30,7 +44,7 @@ def create_user():
             try:
                 NewUser.validate_new_user(username, email)
             except UserNotValidError as e:
-                return{'message': f'sorry, {e}'}, 400
+                return {'message': f'sorry, {e}'}, 400
 
             try:
                 validate_email(email).email
@@ -57,22 +71,3 @@ def create_user():
     except Exception as e:
         print(f'error en create_user(): {e}')
         return {f'message': 'sorry, we are cooking :v'}, 500
-
-
-@user_blueprint.route('/restaurants', strict_slashes=False)
-@jwt_required()
-def get_restaurant():
-    try:
-        args = request.args
-        user_id = request.userid
-
-        if args:
-            if args.get('private'):
-                private_restaurants = Restaurant.query.filter_by(public_access=False, user_id=user_id).all()
-                return {'restaurant': [restaurant.to_json() for restaurant in private_restaurants]}, 200
-        else:
-            restaurants = Restaurant.query.filter_by(user_id=user_id).all()
-            return {'restaurant': [restaurant.to_json() for restaurant in restaurants]}, 200
-    except Exception as e:
-        print(f'error en get_restaurant(): {e}')
-        return {'message': 'sorry, we are cooking :v'}, 500
