@@ -1,3 +1,4 @@
+from flasgger import swag_from
 from flask import Blueprint, request
 from flask_jwt import jwt_required
 
@@ -9,6 +10,7 @@ country_blueprint = Blueprint('country_blueprint', __name__, url_prefix="/countr
 
 @country_blueprint.route('/')
 @jwt_required()
+@swag_from('../documentation/swagger.yaml')
 def get_countries():
     try:
         args = request.args
@@ -48,6 +50,7 @@ def get_countries():
 
 @country_blueprint.route('/<country_id>')
 @jwt_required()
+@swag_from('../documentation/swagger.yaml')
 def get_country(country_id=None):
     try:
         country = Country.query.get(country_id)

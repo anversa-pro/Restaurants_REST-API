@@ -1,10 +1,12 @@
 import requests as requests
+from flasgger import swag_from
 from flask import Blueprint
 
 random_blueprint = Blueprint('random_blueprint', __name__, url_prefix="/random")
 
 
 @random_blueprint.route('/')
+@swag_from('../documentation/swagger.yaml')
 def get_random_number():
 
     url = 'http://www.randomnumberapi.com/api/v1.0/random'

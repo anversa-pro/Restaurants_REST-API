@@ -1,3 +1,4 @@
+from flasgger import swag_from
 from flask_jwt import jwt_required
 
 from config import db
@@ -17,6 +18,7 @@ user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/users")
 
 @user_blueprint.route('/')
 @jwt_required()
+@swag_from('../documentation/swagger.yaml')
 def get_user():
     user_id = request.userid
     try:
@@ -30,6 +32,7 @@ def get_user():
 
 
 @user_blueprint.route('/', methods=['POST'])
+@swag_from('../documentation/swagger.yaml')
 def create_user():
     try:
         body_json = request.json
@@ -63,7 +66,7 @@ def create_user():
             db.session.add(new_user)
             db.session.commit()
 
-            return {'message': f'user {new_user.username} has been created successfully'}, 202
+            return {'message': f'user > {new_user.id} < has been created successfully'}, 202
 
         else:
             return {'message': 'some parameters are missing'}, 400

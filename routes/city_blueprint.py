@@ -1,3 +1,4 @@
+from flasgger import swag_from
 from flask import Blueprint, request
 from flask_jwt import jwt_required
 
@@ -10,6 +11,7 @@ city_blueprint = Blueprint('city_blueprint', __name__, url_prefix="/cities")
 
 
 @city_blueprint.route('/')
+@swag_from('../documentation/swagger.yaml')
 @jwt_required()
 def get_cities():
     try:
@@ -56,6 +58,7 @@ def get_cities():
 
 @city_blueprint.route('/<city_id>')
 @jwt_required()
+@swag_from('../documentation/swagger.yaml')
 def get_city(city_id=None):
     try:
         city = City.query.get(city_id)

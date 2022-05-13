@@ -11,9 +11,42 @@ from validators.validator import Validator
 restaurant_blueprint = Blueprint('restaurant_blueprint', __name__, url_prefix="/restaurants")
 
 
+@restaurant_blueprint.route('/create', methods=['POST'])
+@jwt_required()
+@swag_from('../documentation/swagger.yaml')
+def create_restaurant():
+    try:
+        body_json = request.json
+
+        name = body_json.get('name') or ''
+        ranking = body_json.get('ranking') or ''
+        chef = body_json.get('chef') or ''
+        abstract = body_json.get('abstract') or ''
+        access = body_json.get('public_access') or False
+        city = body_json.get('city') or ''
+        user_id = request.userid
+
+        create = Validator.validate_nonempty(name, ranking, chef, abstract, access, city, user_id)
+
+        if create:
+            new_restaurant = Restaurant(name=name, ranking=ranking, chef=chef, abstract=abstract, public_access=access,
+                                        city=city, user_id=user_id)
+
+            db.session.add(new_restaurant)
+            db.session.commit()
+
+            return {'message': f'restaurant {new_restaurant.id} has been created successfully'}, 202
+
+        else:
+            return {'message': 'some parameters are missing'}, 400
+    except Exception as e:
+        print(f'error en create_restaurant(): {e}')
+        return {'message': 'sorry, we are cooking :v'}, 500
+
+
 @restaurant_blueprint.route('/')
 @jwt_required()
-@swag_from('../documentation/get_restaurants.yml')
+@swag_from('../documentation/swagger.yaml')
 def get_restaurants():
     try:
         args = request.args
@@ -62,6 +95,7 @@ def get_restaurants():
 
 @restaurant_blueprint.route('/user')
 @jwt_required()
+@swag_from('../documentation/swagger.yaml')
 def get_user_restaurants():
     user_id = request.userid
 
@@ -134,6 +168,7 @@ def get_user_restaurants():
 
 @restaurant_blueprint.route('/<restaurant_id>')
 @jwt_required()
+@swag_from('../documentation/swagger.yaml')
 def get_restaurant(restaurant_id=None):
     try:
         restaurant = Restaurant.query.get(restaurant_id)
@@ -151,40 +186,9 @@ def get_restaurant(restaurant_id=None):
         return {'message': 'sorry, we are cooking :v'}, 500
 
 
-@restaurant_blueprint.route('/create', methods=['POST'])
-@jwt_required()
-def create_restaurant():
-    try:
-        body_json = request.json
-
-        name = body_json.get('name') or ''
-        ranking = body_json.get('ranking') or ''
-        chef = body_json.get('chef') or ''
-        abstract = body_json.get('abstract') or ''
-        access = body_json.get('public_access') or False
-        city = body_json.get('city') or ''
-        user_id = request.userid
-
-        create = Validator.validate_nonempty(name, ranking, chef, abstract, access, city, user_id)
-
-        if create:
-            new_restaurant = Restaurant(name=name, ranking=ranking, chef=chef, abstract=abstract, public_access=access,
-                                        city=city, user_id=user_id)
-
-            db.session.add(new_restaurant)
-            db.session.commit()
-
-            return {'message': f'restaurant {new_restaurant.id} has been created successfully'}, 202
-
-        else:
-            return {'message': 'some parameters are missing'}, 400
-    except Exception as e:
-        print(f'error en create_restaurant(): {e}')
-        return {'message': 'sorry, we are cooking :v'}, 500
-
-
 @restaurant_blueprint.route('/<restaurant_id>/update', methods=['PUT'])
 @jwt_required()
+@swag_from('../documentation/swagger.yaml')
 def update_restaurant(restaurant_id=None):
     try:
         body_json = request.json
@@ -203,6 +207,7 @@ def update_restaurant(restaurant_id=None):
 
 @restaurant_blueprint.route('/<restaurant_id>/delete', methods=['DELETE'])
 @jwt_required()
+@swag_from('../documentation/swagger.yaml')
 def delete_restaurant(restaurant_id=None):
     try:
         restaurant = Restaurant.query.get(restaurant_id)
