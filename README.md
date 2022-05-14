@@ -25,9 +25,16 @@ TBD
 ## Technology Stack
 >       Python 3.8.10   
 >       Flask 2.1.2
->       Gunicorn 20.1.0
->       flasgger==0.9.5
 >       AWS Cloud Services
+>           RDS
+>           EC2
+>       MySQL Server 8.0
+>       MySQL Client 2.1.0
+>       SQLALchemy 1.4.36
+>       Gunicorn 20.1.0
+>       flasgger 0.9.5
+>       bcrypt 3.2.2
+>       pyJWT 1.4.2
 
 ## Environment
 This project was developed on Ubuntu 20.22 LTS using python3 (version 3.8.10)
@@ -54,10 +61,67 @@ of tests of each endpoint.
 
 ## File Descriptions
 The API documentation is available on: Restaurant REST API Documentation 
-as good as on the repository route /Documentation/swagger.yaml:
+as good as on the repository route /Documentation/ also you can access to 
+an interface with yor localhost:8000/apidocs/
+
+app.py - contains the entry point of the API.
+documentation/ directory contains files used for document endpoints of this project:
+
+    authentication.yml
+    create_restaurant.yml
+    create_user.yml
+    delete_restaurant.yml
+    get_cities.yml
+    get_city_by_id.yml
+    get_countries.yml
+    get_country_by_id.yml
+    get_random.yml
+    get_restaurant_by_id.yml
+    get_restaurants.yml
+    get_user.yml
+    get_user_restaurants.yml
+    update_restaurant.yml
+
+models/ directory contains classes used for this project:
+
+    restaurant
+    city
+    country
+    user
+
+routes/ directory contains endpoints used for this project:
+
+    restaurant
+    city
+    country
+    user
+    random
+security/ directory contains functions used to encrypt and decrypt tokens to identify users for this project:
+
+    security
+
+validators/ directory contains methods used to check requests parameters
+
+    password
+    user
+    validator
 
 ## Usage
-TBD
+The repo contains the access to the AWS RDS  with prefilled data, 
+and a Gunicorn server over EC2 is available to test the API. 
+The access to that connection is temporary, in case it is no longer available, 
+you can find a data file in the repo to build it locally or with your preferred provider.
+
+Three ways to test the API:
+
+### Postman
+Load the collection in the path _______ into your postman count.
+
+### API URL powered by flasgger
+Open the url: _______:8000/apidocs in your browser
+
+### Console
+Open a console to use the method cURL method.
 
 ## Examples of use
 TBD
