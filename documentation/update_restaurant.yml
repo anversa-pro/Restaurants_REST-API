@@ -1,0 +1,51 @@
+Modify an existing restaurant in the database
+---
+tags:
+- name: Restaurants
+description: A JSON request to modify a restaurant
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  - in: header
+    name: Authorization
+    type: string
+    required: true
+    description: Access token
+  - in: path
+    name: restaurant_id
+    type: integer
+    required: true
+  - in: body
+    name: body
+    description: Parameters to be changed in a restaurant
+    required: true
+    schema:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      example:
+        {name: Bonca, ranking: 16}
+security:
+- jwtAuth: []
+responses:
+  200:
+    description: Successful operation
+  400:
+    description: Missing or invalid parameters
+  401:
+    description: Unauthorized
+  500:
+    description: Server error
+
+securityDefinitions:
+  jwtAuth:
+    type: oauth2
+    flow: implicit
+    scopes:
+      write:restaurants: modify restaurants in your account
+      read:restaurants: read public restaurants and in your account

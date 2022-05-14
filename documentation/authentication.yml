@@ -1,0 +1,48 @@
+User log-in returns an access token available for 20 mins
+---
+tags:
+- name: Users
+description: A JSON request to create a user
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  - in: body
+    name: body
+    description: User info to log-in
+    required: true
+    schema:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+      example:
+        {username: Agustín , email: agus@tester.com, password: "**********"}
+
+responses:
+  202:
+    description: Successful operation
+    schema:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      example:
+        {access_token: "owpf8auifbt4tnf..."}
+  400:
+    description: Missing or invalid parameters
+  401:
+    description: Unauthorized
+  500:
+    description: Server error

@@ -6,15 +6,15 @@ random_blueprint = Blueprint('random_blueprint', __name__, url_prefix="/random")
 
 
 @random_blueprint.route('/')
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/get_random.yml')
 def get_random_number():
 
     url = 'http://www.randomnumberapi.com/api/v1.0/random'
-    query = '?min=100&max=1000&count=5'
+    query = '?min=10&max=100&count=5'
 
     try:
         r = requests.get(url+query)
-        result = {'random number': r.text}
+        result = {'random numbers': r.text}
         return result, 200
 
     except Exception as e:

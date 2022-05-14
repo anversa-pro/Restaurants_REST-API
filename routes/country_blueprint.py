@@ -10,7 +10,7 @@ country_blueprint = Blueprint('country_blueprint', __name__, url_prefix="/countr
 
 @country_blueprint.route('/')
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/get_countries.yml')
 def get_countries():
     try:
         args = request.args
@@ -50,7 +50,7 @@ def get_countries():
 
 @country_blueprint.route('/<country_id>')
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/get_country_by_id.yml')
 def get_country(country_id=None):
     try:
         country = Country.query.get(country_id)

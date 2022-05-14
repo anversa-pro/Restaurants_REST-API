@@ -1,0 +1,24 @@
+Return random numbers
+---
+tags:
+- name: Random
+description: A JSON array of numbers
+produces:
+  - application/json
+responses:
+  200:
+    description: Successful operation
+    schema:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: array
+          items:
+            type: integer
+      example:
+        {random numbers: "[35, 22, 45, 11, 88]"}
+  500:
+    description: Server error
+

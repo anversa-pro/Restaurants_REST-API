@@ -18,6 +18,7 @@ from routes.user_blueprint import user_blueprint
 
 jwt = JWT(app, authenticate, identity)
 
+
 app.register_blueprint(city_blueprint)
 app.register_blueprint(country_blueprint)
 app.register_blueprint(random_blueprint)

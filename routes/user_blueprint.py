@@ -18,7 +18,7 @@ user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/users")
 
 @user_blueprint.route('/')
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/create_user.yml')
 def get_user():
     user_id = request.userid
     try:
@@ -32,7 +32,7 @@ def get_user():
 
 
 @user_blueprint.route('/', methods=['POST'])
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/create_user.yml')
 def create_user():
     try:
         body_json = request.json

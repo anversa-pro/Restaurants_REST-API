@@ -13,7 +13,7 @@ restaurant_blueprint = Blueprint('restaurant_blueprint', __name__, url_prefix="/
 
 @restaurant_blueprint.route('/create', methods=['POST'])
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/create_restaurant.yml')
 def create_restaurant():
     try:
         body_json = request.json
@@ -46,7 +46,7 @@ def create_restaurant():
 
 @restaurant_blueprint.route('/')
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/get_restaurants.yml')
 def get_restaurants():
     try:
         args = request.args
@@ -95,7 +95,7 @@ def get_restaurants():
 
 @restaurant_blueprint.route('/user')
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/get_user_restaurants.yml')
 def get_user_restaurants():
     user_id = request.userid
 
@@ -168,7 +168,7 @@ def get_user_restaurants():
 
 @restaurant_blueprint.route('/<restaurant_id>')
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/get_restaurant_by_id.yml')
 def get_restaurant(restaurant_id=None):
     try:
         restaurant = Restaurant.query.get(restaurant_id)
@@ -188,7 +188,7 @@ def get_restaurant(restaurant_id=None):
 
 @restaurant_blueprint.route('/<restaurant_id>/update', methods=['PUT'])
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/update_restaurant.yml')
 def update_restaurant(restaurant_id=None):
     try:
         body_json = request.json
@@ -207,7 +207,7 @@ def update_restaurant(restaurant_id=None):
 
 @restaurant_blueprint.route('/<restaurant_id>/delete', methods=['DELETE'])
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/delete_restaurant.yml')
 def delete_restaurant(restaurant_id=None):
     try:
         restaurant = Restaurant.query.get(restaurant_id)

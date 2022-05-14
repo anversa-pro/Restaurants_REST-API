@@ -1,0 +1,77 @@
+Return all public restaurants in the database
+---
+tags:
+- name: Restaurants
+description: A JSON array of restaurants
+produces:
+  - application/json
+parameters:
+  - in: header
+    name: Authorization
+    type: string
+    required: true
+    description: Access token
+  - in: query
+    name: page
+    type: integer
+    required: false
+    minimum: 1
+    default: 1
+    description: The page number to return.
+  - in: query
+    name: limit
+    type: integer
+    required: false
+    minimum: 1
+    default: 5
+    description: The number of elements to return
+  - in: query
+    name: private
+    type: string
+    required: false
+    default: false
+    description: To return user private records only
+  - in: query
+    name: public
+    type: string
+    required: false
+    default: false
+    description: To return user public records only
+security:
+- jwtAuth: []
+responses:
+  200:
+    description: Successful operation
+    schema:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: array
+          items:
+            item:
+              type: object
+              properties:
+                key:
+                  type: string
+                value:
+                  type: string
+      example:
+        {restaurants: [{id: 1, name: Bicono},{id: 2, name: Longo's}]}
+  400:
+    description: Missing or invalid parameters
+  401:
+    description: Unauthorized
+  404:
+    description: Information not found
+  500:
+    description: Server error
+
+securityDefinitions:
+  jwtAuth:
+    type: oauth2
+    flow: implicit
+    scopes:
+      write:restaurants: modify restaurants in your account
+      read:restaurants: read public restaurants and in your account

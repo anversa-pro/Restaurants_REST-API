@@ -15,6 +15,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
 app.config['SECRET_KEY'] = os.environ["JWT_SECRET_KEY"]
 app.config['JWT_AUTH_USERNAME_KEY'] = "email"
 app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(minutes=20)
+app.config['SWAGGER'] = {'title': 'RESTAURANT RESTFUL API',
+                         'description': 'HTTP server REST API implementation for the best restaurants in LATAM'}
 
 swagger = Swagger(app)
 

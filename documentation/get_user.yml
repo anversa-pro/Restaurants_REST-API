@@ -1,0 +1,40 @@
+Return user saved info the database
+---
+tags:
+- name: Users
+description: A JSON request info of a user
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  - in: body
+    name: body
+    description: User to return
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        user_id:
+          type: string
+          format: password
+      example:
+        {username: Agustín , email: agus@tester.com, user_id: 4}
+
+responses:
+  202:
+    description: Successful operation
+  400:
+    description: Missing or invalid parameters
+  401:
+    description: Unauthorized
+  500:
+    description: Server error

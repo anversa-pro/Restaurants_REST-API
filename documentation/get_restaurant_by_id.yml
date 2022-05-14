@@ -1,0 +1,54 @@
+Return an specific restaurant
+---
+tags:
+- name: Restaurants
+description: A JSON object of restaurant
+produces:
+  - application/json
+parameters:
+  - in: header
+    name: Authorization
+    type: string
+    required: true
+    description: Access token
+  - in: path
+    name: restaurant_id
+    type: integer
+    required: true
+security:
+- jwtAuth: []
+responses:
+  200:
+    description: Successful operation
+    schema:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: object
+          properties:
+            key:
+              type: string
+            value:
+              type: string
+      example:
+        {restaurant: {id: 5, name: Renatta}}
+  400:
+    description: Missing or invalid parameters
+  401:
+    description: Unauthorized
+  403:
+    description: Access denied
+  404:
+    description: Information not found
+  500:
+    description: Server error
+
+securityDefinitions:
+  jwtAuth:
+    type: oauth2
+    flow: implicit
+    scopes:
+      write:restaurants: modify restaurants in your account
+      read:restaurants: read public restaurants and in your account

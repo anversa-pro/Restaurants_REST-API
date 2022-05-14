@@ -1,0 +1,65 @@
+Return all cities in the database
+---
+tags:
+- name: Cities
+description: A JSON array of cities
+produces:
+  - application/json
+parameters:
+  - in: header
+    name: Authorization
+    type: string
+    required: true
+    description: Access token
+  - in: query
+    name: page
+    type: integer
+    required: false
+    minimum: 1
+    default: 1
+    description: The page number to return.
+  - in: query
+    name: limit
+    type: integer
+    required: false
+    minimum: 1
+    default: 5
+    description: The number of elements to return
+security:
+- jwtAuth: []
+responses:
+  200:
+    description: Successful operation
+    schema:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: array
+          items:
+            item:
+              type: object
+              properties:
+                key:
+                  type: string
+                value:
+                  type: string
+      example:
+        {cities: [{id: 16, name: Mendoza, country: 1},{id: 17, name: Medellín, country: 5}]}
+  400:
+    description: Missing or invalid parameters
+  401:
+    description: Unauthorized
+  404:
+    description: Information not found
+  500:
+    description: Server error
+
+securityDefinitions:
+  jwtAuth:
+    type: oauth2
+    flow: implicit
+    scopes:
+      write:restaurants: modify restaurants in your account
+      read:restaurants: read public restaurants and in your account

@@ -11,8 +11,8 @@ city_blueprint = Blueprint('city_blueprint', __name__, url_prefix="/cities")
 
 
 @city_blueprint.route('/')
-@swag_from('../documentation/swagger.yaml')
 @jwt_required()
+@swag_from('../documentation/get_cities.yml')
 def get_cities():
     try:
         args = request.args
@@ -58,7 +58,7 @@ def get_cities():
 
 @city_blueprint.route('/<city_id>')
 @jwt_required()
-@swag_from('../documentation/swagger.yaml')
+@swag_from('../documentation/get_city_by_id.yml')
 def get_city(city_id=None):
     try:
         city = City.query.get(city_id)

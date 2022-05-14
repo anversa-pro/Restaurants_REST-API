@@ -1,0 +1,66 @@
+Add a new restaurant to the database
+---
+tags:
+- name: Restaurants
+description: A JSON request to create a restaurant
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  - in: header
+    name: Authorization
+    type: string
+    required: true
+    description: Access token
+  - in: body
+    name: body
+    description: Restaurant info to set in the database
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+        - ranking
+        - chef
+        - abstract
+        - public_access
+        - city
+      properties:
+        name:
+          type: string
+        ranking:
+          type: integer
+          format: int32
+        chef:
+          type: string
+        abstract:
+          type: string
+        public_access:
+          type: boolean
+        city:
+          type: integer
+          format: int32
+      example:
+        {name: Nola, ranking: 16, chef: Luciano Rivarola,
+         abstract: Perfect flavour for a summer night,
+         public_access: true, city: 13}
+security:
+- jwtAuth: []
+responses:
+  202:
+    description: Successful operation
+  400:
+    description: Missing or invalid parameters
+  401:
+    description: Unauthorized
+  500:
+    description: Server error
+
+securityDefinitions:
+  jwtAuth:
+    type: oauth2
+    flow: implicit
+    scopes:
+      write:restaurants: modify restaurants in your account
+      read:restaurants: read public restaurants and in your account
