@@ -25,18 +25,6 @@ parameters:
     minimum: 1
     default: 5
     description: The number of elements to return
-  - in: query
-    name: private
-    type: string
-    required: false
-    default: false
-    description: To return user private records only
-  - in: query
-    name: public
-    type: string
-    required: false
-    default: false
-    description: To return user public records only
 security:
 - jwtAuth: []
 responses:

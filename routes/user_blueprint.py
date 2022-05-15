@@ -18,7 +18,7 @@ user_blueprint = Blueprint('user_blueprint', __name__, url_prefix="/users")
 
 @user_blueprint.route('/')
 @jwt_required()
-@swag_from('../documentation/create_user.yml')
+@swag_from('../documentation/get_user.yml')
 def get_user():
     user_id = request.userid
     try:
