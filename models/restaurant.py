@@ -10,7 +10,7 @@ class Restaurant(db.Model):
     name = db.Column(db.String(200), nullable=False)
     ranking = db.Column(db.Integer, nullable=False, unique=True)
     chef = db.Column(db.String(200), nullable=False)
-    abstract = db.Column(db.String(1023), nullable=False)
+    abstract = db.Column(db.String(2000), nullable=False)
     public_access = db.Column(db.Boolean, nullable=False)
     city = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

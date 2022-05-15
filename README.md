@@ -97,7 +97,7 @@ The API documentation is available in the repository folder [documentation](docu
           * Restarting with stat
           * Debugger is active!
           * Debugger PIN: 940-225-637
-7. To test the API, copy the IP address from your console, e.g. `192.168.0.0` and go to [Usage](#usage) 
+7. To test the API, copy the IP address from your console, e.g. `192.172.0.0` and go to [Usage](#usage) 
 8. When you have done, terminate the app process with `Ctrl+c` and deactivate the venv.
 
      $   deactivate
@@ -106,7 +106,8 @@ The API documentation is available in the repository folder [documentation](docu
 
 --- IMPORTANT: The project has access to an AWS RDS with prefilled data by default. Further, a Gunicorn server over AWS EC2 is available to test the API. Access to these tools is temporary. When no longer available, you can find a script in the repo to build it locally or with your preferred provider and update the .env file with the new database credentials. ---
 
-Note: If the server is no longer available, or you are testing the project locally, change the HOST for the IP you get running the app
+Note: If the server is no longer available, or you are testing the project locally, change the HOST for the IP you get running the app during the [installation](#installation) process.   
+
 Three ways to test the API:
 
 ### Postman
@@ -114,6 +115,7 @@ Load the postman collection in the [collections](documentation/collections) fold
 
 Note: If the connection is no longer available, change the HOST variable for a public server IP, or the IP you get after following the [installation](#installation/6) process.
 
+![Postman interface](documentation/images/POSTMAN_Test.PNG)
 
 ### Swagger Documentation Page
 
@@ -133,7 +135,7 @@ Open a console to use the method CURL method.
         $ curl -X POST "http://54.174.10.3:8000/auth" -H "Content-Type: application/json" -d "{ \"email\":\"testerOne@testermail.com\", \"password\":\"ABcd#12345\"}"
         $ curl -X GET "http://54.174.10.3:8000/restaurants/user?private=true" -H "Authorization: JWT <access-token>
         $ curl -X POST "http://54.174.10.3:8000/restaurants/create" -H "Authorization: JWT <access-token> -H "Content-Type: application/json" -d "{ \"abstract\": \"Perfect flavour for a summer night\", \"chef\": \"Luciano Rivarola\", \"city\": 13, \"name\": \"Nola\", \"public_access\": true, \"ranking\": 16}"
-        $ curl -X DELETE "http://54.174.10.3:8000/restaurants/16/delete" -H "Authorization: JWT <access-token>"
+        $ curl -X DELETE "http://54.174.10.3:8000/restaurants/5/delete" -H "Authorization: JWT <access-token>"
 
 ## Bugs
 No known bugs at this time.

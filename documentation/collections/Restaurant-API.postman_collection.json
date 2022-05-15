@@ -3,3 +3,1110 @@
 		"_postman_id": "7a5db8d1-f70a-4716-a16c-08e9e302e499",
 		"name": "Restaurant-API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "CREATE USER - invalid email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"testerTwo\",\r\n    \"email\":\"...@testermail.com\",\r\n    \"password\":\"ABcd01234!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/users",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE USER - invalid email 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"testerTwo\",\r\n    \"email\":\"testerTwo@---.com\",\r\n    \"password\":\"ABcd01234!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/users",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE USER - invalid password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"testerTwo\",\r\n    \"email\":\"testerTwo@testermail.com\",\r\n    \"password\":\"ABCD012345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/users",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE USER - invalid password 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"testerTwo\",\r\n    \"email\":\"testerTwo@testermail.com\",\r\n    \"password\":\"abcd!EFgh\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/users",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE USER - valid testerTwo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"testerTwo\",\r\n    \"email\":\"testerTwo@testermail.com\",\r\n    \"password\":\"ABCDEf6@12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/users",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN - valid testerOne",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = JSON.parse(responseBody);\r",
+									"pm.collectionVariables.set(\"token\", jsonData.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"testerOne@testermail.com\",\r\n    \"password\":\"ABcd#12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/auth",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET USER - testerOne info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"testerOne@testermail.com\",\r\n    \"password\":\"ABcd#12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/users",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Restaurants",
+			"item": [
+				{
+					"name": "GET RESTAURANTS - all public default pagination",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RESTAURANTS - all public paginated",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants?page=13&limit=2",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "13"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RESTAURANTS - all public empty page",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants?page=20&limit=2",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "20"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RESTAURANT - by ID valid",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}//restaurants/15",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"",
+								"restaurants",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RESTAURANT - by ID invalid",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}//restaurants/40",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"",
+								"restaurants",
+								"40"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RESTAURANTS - by user - invalid parameters",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/user?page&limit=4",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants",
+								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": null
+								},
+								{
+									"key": "limit",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RESTAURANTS - by user all paginated",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/user?page=2&limit=3",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants",
+								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RESTAURANTS - by user - public only",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/user?page=1&limit=3",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants",
+								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RESTAURANTS - by user private only",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/user?private=true",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants",
+								"user"
+							],
+							"query": [
+								{
+									"key": "private",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE RESTAURANTE - valid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Aramburu\",\r\n    \"ranking\": 28,\r\n    \"chef\":\"Gonzalo Aramburu\",\r\n    \"abstract\": \"Back in 2007, Gonzalo Aramburu opened his first restaurant in Argentina after training in some of the most important kitchens in the world under chefs such as Daniel Boulud, Charlie Trotter and Martín Berasategui. With a creative vision anchored in research and technique, he put forward a tasting menu with seasonal products that elevate Argentine cuisine to a new level. In 2018, Aramburu relocated to the Recoleta neighbourhood, further expanding to the top floor in 2020. The new space is decorated with a vertical garden, features an R&D laboratory with a test kitchen and a private room with a table seating 12. The spectacular 20-course tasting menu takes diners on a journey traversing the restaurant’s floors and is accompanied by wines selected from the restaurant’s recently added cellar.\",\r\n    \"public_access\": false,\r\n    \"city\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/create",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE RESTAURANTE - invalid missing parameters",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Mishiguene\",\r\n    \"ranking\": 29,\r\n    \"abstract\": \"Mishiguene, which means crazy in Yiddish, honours Argentina’s Jewish immigrant heritage by reinventing Ashkenazi, Sephardic, Israeli and Middle Eastern cooking. Here, nouvelle techniques are applied to old world recipes, using the highest-quality ingredients possible. Chef Tomás Kalika spent years learning Middle Eastern flavour profiles and many of Mishiguene’s dishes were inspired by personal events in Kalika’s life, including a Russian-Polish borscht and spit-roasted Moroccan lamb. Every Friday night Mishiguene celebrates Shabbat, and the entire restaurant breaks out in song and dance, led by a klezmer band that plays live music. For the ultimate experience, request the special tasting menu and sit at the chef’s table inside the kitchen. During the pandemic, Mishiguene upped the tempo further, providing a delivery service and an outdoor terrace for its guests, and in September 2021, the new Café Mishiguene joined its ranks.\",\r\n    \"public_access\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/create",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE RESTAURANT - invalid ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ranking\": 27,\r\n    \"city\": 22,\r\n    \"abstract\": \"Rosetta is made up of a series of distinctive individual spaces in a once-grand but now-welcoming townhouse in Mexico City’s artistic Roma district. Service is attentive but down-to-earth, reflecting the contemporary but not over-elaborate Mexican food sourced from small-scale producers. Chef Elena Reygadas made her name specialising in exquisite hand-made pasta dishes. In recent years, the restaurant’s emphasis has shifted towards a deeper Mexican sensibility with reinterpretations of tamales and mole recipes, alongside the likes of quail served with faro, dates and mustard leaves. When the eclectic mansion could no longer welcome its diners inside during the pandemic, Reygadas began a new grocery list. It led Rosetta’s offering – which might include wagyu beef tartare and Jerusalem artichoke with lentil and beetroot hummus – to become portable for delivery and take-away.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/40/update",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants",
+								"40",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE RESTAURANT - invalid paramater",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ranking\": 27,\r\n    \"city\": 22,\r\n    \"address\" : \"Rivadavia 5000\",\r\n    \"abstract\": \"Rosetta is made up of a series of distinctive individual spaces in a once-grand but now-welcoming townhouse in Mexico City’s artistic Roma district. Service is attentive but down-to-earth, reflecting the contemporary but not over-elaborate Mexican food sourced from small-scale producers. Chef Elena Reygadas made her name specialising in exquisite hand-made pasta dishes. In recent years, the restaurant’s emphasis has shifted towards a deeper Mexican sensibility with reinterpretations of tamales and mole recipes, alongside the likes of quail served with faro, dates and mustard leaves. When the eclectic mansion could no longer welcome its diners inside during the pandemic, Reygadas began a new grocery list. It led Rosetta’s offering – which might include wagyu beef tartare and Jerusalem artichoke with lentil and beetroot hummus – to become portable for delivery and take-away.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_IP}}/restaurants/27/update",
+							"host": [
+								"{{HOST_IP}}"
+							],
+							"path": [
+								"restaurants",
+								"27",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE RESTAURANT - valid",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ranking\": 27,\r\n    \"city\": 22,\r\n    \"abstract\": \"Rosetta is made up of a series of distinctive individual spaces in a once-grand but now-welcoming townhouse in Mexico City’s artistic Roma district. Service is attentive but down-to-earth, reflecting the contemporary but not over-elaborate Mexican food sourced from small-scale producers. Chef Elena Reygadas made her name specialising in exquisite hand-made pasta dishes. In recent years, the restaurant’s emphasis has shifted towards a deeper Mexican sensibility with reinterpretations of tamales and mole recipes, alongside the likes of quail served with faro, dates and mustard leaves. When the eclectic mansion could no longer welcome its diners inside during the pandemic, Reygadas began a new grocery list. It led Rosetta’s offering – which might include wagyu beef tartare and Jerusalem artichoke with lentil and beetroot hummus – to become portable for delivery and take-away.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_IP}}/restaurants/27/update",
+							"host": [
+								"{{HOST_IP}}"
+							],
+							"path": [
+								"restaurants",
+								"27",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE RESTAURANT - invalid ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/7/delete",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants",
+								"7",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE RESTAURANT - valid",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/28/delete",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"restaurants",
+								"28",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cities",
+			"item": [
+				{
+					"name": "GET CITIES -  all - default pagination",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/cities",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET CITIES - invalid pagination",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/cities?limit=2&page=-1",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"cities"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET CITY - by ID valid",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/cities/25",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"cities",
+								"25"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET CITY - by ID invalid",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/cities/50",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"cities",
+								"50"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Countries",
+			"item": [
+				{
+					"name": "GET COUNTRIES -  all - default pagination",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/countries",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"countries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET COUNTRY / by ID valid",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/countries/16",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"countries",
+								"16"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET COUNTRY / by ID invalid",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/countries/50",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"countries",
+								"50"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Random Number",
+			"item": [
+				{
+					"name": "RANDOM NUMBER",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{HOST}}:{{PORT}}/random",
+							"protocol": "http",
+							"host": [
+								"{{HOST}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"random"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "HOST",
+			"value": "54.174.10.3",
+			"type": "string"
+		},
+		{
+			"key": "PORT",
+			"value": "8000",
+			"type": "string"
+		},
+		{
+			"value": "",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}
