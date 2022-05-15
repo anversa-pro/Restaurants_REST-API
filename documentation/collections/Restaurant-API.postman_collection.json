@@ -702,10 +702,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_IP}}/restaurants/27/update",
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/27/update",
+							"protocol": "http",
 							"host": [
-								"{{HOST_IP}}"
+								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"restaurants",
 								"27",
@@ -736,10 +738,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST_IP}}/restaurants/27/update",
+							"raw": "http://{{HOST}}:{{PORT}}/restaurants/27/update",
+							"protocol": "http",
 							"host": [
-								"{{HOST_IP}}"
+								"{{HOST}}"
 							],
+							"port": "{{PORT}}",
 							"path": [
 								"restaurants",
 								"27",

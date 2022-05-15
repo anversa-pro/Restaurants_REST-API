@@ -6,7 +6,7 @@
 * Creating a registration service that receives an email and a password.
 * Allowing login into the server with an email and a password.
 * Allowing logged-in users to do CRUD operations into the table.
-* Adding an endpoint that requires your server to retrieve a random number from a public API and send it back to the user.
+* Adding an endpoint that requires the server to retrieve a random number from a public API and send it back to the user.
 
 ## Table of Content
 * [Architecture](#architecture)
@@ -14,6 +14,7 @@
   * [Database Diagram Model](#database-diagram-model)
 * [Environment](#environment)
   * [File Descriptions](#file-descriptions)
+  * [API Endpoints](#api-endpoints)
 * [Installation](#installation)
 * [Usage](#usage)
   * [Testing with Postman](#postman)
@@ -69,7 +70,55 @@ The API documentation is available in the repository folder [documentation](docu
 `security/` contains functions used to encrypt and decrypt tokens to identify users for this project:
 
 `validators/` contains methods used to validate request parameters.
+
+### API Endpoints
+This is the list of available endpoints for this project.
+
+**Authorization**
+
+|Method	    |Path       |Description                        |
+|-------    |-------    |-------                            |
+|POST	    |/auth/	    |Return the token access and valid for 20 minutes.<br> Must send the email and password of the user in the request body.    |
+
+**Cities**
+
+|Method	    |Path	                |Description                        |
+|-------    |-------                |-------                            |
+|GET	    | /cities/      	    |Return all cities in the database. <br>Pagination: <br>`page` indicates the page number you want to see. <br>`limit` indicates the items per page.<br>* By default, if not query params, the program returns one page with five items.<br>* If the page does not exist, return pagination info and an empty dictionary. <br>e.g. `/cities?page=2&limit=2`   |
+|GET	    | /cities/{city_id}	    |Return a city specified in the request. <br>e.g. <br>`/cities/15`             |
+
+**Countries**
+
+|Method	    |Path	                |Description                        |
+|-------    |-------                |-------                            |
+|GET        |/countries/            |Return all countries in the database.<br>Pagination: <br>`page` indicates the page number you want to see. <br>`limit` indicates the items per page.<br>* By default, if not query params, the program returns one page with five items.<br>* If the page does not exist, return pagination info and an empty dictionary. <br>e.g. `/countries?page=1&limit=10`   |
+|GET        |/countries/{country_id}|Return a city specified in the request.<br>e.g. <br>`/countries/5`        |
+
+**Random**
+
+|Method	    |Path	                |Description                        |
+|-------    |-------                |-------                            |
+|GET	    |/random/	            |Return random numbers              |
+
+**Restaurants**
+
+|Method	    |Path	                                |Description                                    |
+|-------    |-------                                |-------                                        |
+|GET        |/restaurants/                          |Return all public restaurants in the database. <br>Pagination: <br>`page` indicates the page number you want to see. <br>`limit` indicates the items per page.<br>* By default, if not query params, the program returns one page with five items.<br>* If the page does not exist, return pagination info and an empty dictionary. <br>e.g. `/restaurants?page=8&limit=2`  |
+|POST	    |/restaurants/create	                |Add a new restaurant to the database. <br>The new restaurant info must be present in the body request. The fields abstract, chef, city, name, public_access and ranking are mandatory.<br>e.g. <br> request body: `{ "abstract": "Perfect flavour for a summer night", "chef": "Luciano Rivarola", "city": 13, "name": "Nola", "public_access": true, "ranking": 35}"`          |
+|GET	    |/restaurants/user	                    |Return login user records in the database. <br>Pagination: <br>* By default, if not query params, the program returns one page with five items.<br>`page` indicates the page number you want to see. <br>`limit` indicates the items per page. <br>Access: <br>* By default, if not query params, the program returns all user-created restaurants.<br>`private` when true, return only private user-created restaurants<br>`public` when true, return only public user-created restaurants <br>If the page does not exist, return pagination info and an empty dictionary. <br>e.g. <br> `/restaurants/user?private=true&page=1&limit=2` <br>`/restaurants/user`     |
+|GET	    |/restaurants/{restaurant_id}	        |Return an specific restaurant.<br>e.g. <br>`/restaurants/20`                  |
+|DELETE	    |/restaurants/{restaurant_id}/delete	|Delete a restaurant in the database.<br>`/restaurants/20/delete`            |
+|PUT	    |/restaurants/{restaurant_id}/update	|Modify an existing restaurant in the database.  <br>The restaurant info must be present in the body request and the user must be the restaurant creator to modify it. <br>The fields available are abstract, chef, city, name, public_access and ranking. The program doesn't support other restaurant fields.<br>e.g. <br> request body: `{ "chef": "Alexa Namur", "public_access": false}"`  |
  
+
+**Users**
+
+|Method	    |Path       |Description                            |
+|-------    |-------    |-------                                |
+|GET	    |/users/	|Return user info stored in the database. Users can only get their own information|
+|POST	    |/users/	|Add a new user to the database. <br>The new user info must be present in the body request. The fields username, email and password are mandatory. The password must contain at least 10 characters, one lowercase letter, one uppercase letter and one of the following characters: !, @, #, ? or ]<br>e.g. <br> request body: `{ "email": "example@example.com", "password":"examPle]01", "username":"example"}`       |
+
 ## Installation
 1. Clone this repository
 
@@ -108,39 +157,63 @@ The API documentation is available in the repository folder [documentation](docu
 
 Note: If the server is no longer available, or you are testing the project locally, change the HOST for the IP you get running the app during the [installation](#installation) process.   
 
+
 Three ways to test the API:
 
 ### Postman
-Load the postman collection in the [collections](documentation/collections) folder into your postman account to test each endpoint.
 
-Note: If the connection is no longer available, change the HOST variable for a public server IP, or the IP you get after following the [installation](#installation/6) process.
+Load the postman collection in the [collections](documentation/collections) folder into your postman account to test each endpoint.  
 
-![Postman interface](documentation/images/POSTMAN_Test.PNG)
+#### Examples of use
+The section shows an UPDATE request.
+1. Go to the `User` folder and select `LOGIN` and then `Send`. The server will return an access token you'll need to try the endpoints.
+2. Go to the `Restaurants` folder and select  `UPDATE RESTAURANT - invalid ID` and then `Send`. The response shows an error 400 BAD REQUEST, the ID selected for UPDATE is invalid. 
+![Postman UPDATE-invalid](documentation/images/POSTMAN_UPDATE-invalid.PNG)
+
+3. Go to the `Restaurants` folder and select  `UPDATE RESTAURANT - valid` and then `Send`. The response shows a successful operation.
+![Postman UPDATE-valid](documentation/images/POSTMAN_UPDATE-valid.PNG)
 
 ### Swagger Documentation Page
 
-Follow the default link [Swagger Documentation Page](http://54.174.10.3:8000/apidocs). If the connection is no longer available, type in your browser: ` http://<YOUR HOST>:8000/apidocs ` 
-
+Follow the default link [Swagger Documentation Page](http://54.174.10.3:8000/apidocs).    
+If the connection is no longer available, type in your browser: ` http://<YOUR HOST>:8000/apidocs `  
 ![Swagger Documentation Page Image](documentation/images/API-url.PNG)
 
-Type the parameters according to your preference and execute the request. A box will show you the response from the server.
+#### Examples of use
+This section shows the GET random number request. 
+1. Display the GET Random option and select `Try it out`, 
+2. This test does not need parameters. Select `Execute` 
+3. Go to Responses, the section server response and into the Response 200 box, you'll see the body and headers returned from the server.
+4. You can click on `Execute` again a see new numbers displayed.
+
+![SWAGGER RANDOM-valid](documentation/images/SWAGGER-RANDOM.png)
 
 ### Console
-Open a console to use the method CURL method.
+You can use consoles like cmd, Powershell, Ubuntu or Git bash to use the cURL method.
 
-        $ curl -X <METHOD> "<SCHEME>://<HOST>:<PORT>/<PATH>?<SEARCH>"
-  in e.g.
+        $ curl -X <METHOD> "<SCHEME>://<HOST>:<PORT>/<PATH>?<SEARCH>"  -H "KEY: VALUE" -d "{BODY REQUEST CONTENT}"
 
-        $ curl -X GET "http://54.174.10.3:8000/random/"
+#### Examples of use
+This example shows POST login and GET Restaurants requests.
+1. Open the console and type the curl line to request the login:
+
         $ curl -X POST "http://54.174.10.3:8000/auth" -H "Content-Type: application/json" -d "{ \"email\":\"testerOne@testermail.com\", \"password\":\"ABcd#12345\"}"
-        $ curl -X GET "http://54.174.10.3:8000/restaurants/user?private=true" -H "Authorization: JWT <access-token>
-        $ curl -X POST "http://54.174.10.3:8000/restaurants/create" -H "Authorization: JWT <access-token> -H "Content-Type: application/json" -d "{ \"abstract\": \"Perfect flavour for a summer night\", \"chef\": \"Luciano Rivarola\", \"city\": 13, \"name\": \"Nola\", \"public_access\": true, \"ranking\": 16}"
-        $ curl -X DELETE "http://54.174.10.3:8000/restaurants/5/delete" -H "Authorization: JWT <access-token>"
+    The response:
+
+        {"access_token":"eyJ0e   ....  9Hjhbid5kJbo"}
+
+
+2. Copy the access token. The token is valid for 20 minutes and must be attached to each request.
+3. Type the following line to get the user-created private restaurants, then replace <access_token> with the one you get in the login request.
+
+        $ curl -X GET "http://54.174.10.3:8000/restaurants/user?private=true" -H "Authorization: JWT <access_token>"
+
+    The response is a dictionary with all private restaurants the user has created.
 
 ## Bugs
 No known bugs at this time.
 
-### Author
+## Author
 Angela Vergara | 
 [LinkedIn](https://www.linkedin.com/in/angela-vergara-salamanca/?locale=en_US) | 
 [Github](https://github.com/anversa-pro) |
